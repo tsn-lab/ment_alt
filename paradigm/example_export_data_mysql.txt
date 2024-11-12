@@ -1,0 +1,67 @@
+86.29.237.185
+
+
+
+union select * from prosoc.projecttrialadvisee into outfile '/var/lib/mysql-files/test.csv';
+
+
+select 'worker_ID' 'cur_advisee_dec' 'index_tag' union select * from prosoc.projecttrialadvisee into outfile '/var/lib/mysql-files/test.csv';
+
+
+
+ssh -i ~/.ssh/ubuntu_key.pem ubuntu@3.10.229.117
+
+sudo mysql -u root -p
+
+USE prosoc;
+
+(SELECT 'worker_ID', 'cur_advisee_dec', 'index_tag')
+UNION
+(SELECT worker_ID, cur_advisee_dec, index_tag FROM projecttrialadvisee)
+INTO OUTFILE '/var/lib/mysql-files/projecttrialadvisee.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+(SELECT 'worker_ID', 'assignment_ID', 'hit_ID', 'trial', 'task')
+UNION
+(SELECT worker_ID, assignment_ID, hit_ID, trial, task FROM projectsummary)
+INTO OUTFILE '/var/lib/mysql-files/projectsummary.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+EXIT;
+
+sudo chmod o+rx /var/lib/mysql-files/test.csv
+sudo chmod o+rx /var/lib/mysql-files/trial.csv
+sudo chmod o+rx /var/lib/mysql-files/projecttrialadvisee.csv
+sudo chmod o+rx /var/lib/mysql-files/projectsummary.csv
+
+sftp -i ~/.ssh/ubuntu_key.pem ubuntu@3.10.229.117
+get /var/lib/mysql-files/test.csv
+get /var/lib/mysql-files/trial.csv
+get /var/lib/mysql-files/projecttrialadvisee.csv
+get /var/lib/mysql-files/summary.csv
+get /var/lib/mysql-files/dropouts.csv
+
+
+
+
+
+
+Create database and give it phpadmin rights (after connection to AWS):
+
+sudo mysql -u root
+
+CREATE DATABASE cpd;
+
+USE cpd;
+
+GRANT ALL PRIVILEGES ON cpd.* TO 'tsnlabrhul'@'localhost';
+
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'tsnlabrhul'@'localhost';
+
+

@@ -1,0 +1,12 @@
+sudo chmod o+rx /var/lib/mysql-files/test.csv
+sudo chmod o+rx /var/lib/mysql-files/trial.csv
+sudo chmod o+rx /var/lib/mysql-files/mover2.csv
+sudo chmod o+rx /var/lib/mysql-files/summary.csv
+sudo chmod o+rx /var/lib/mysql-files/dropouts.csv
+
+sftp -i ~/.ssh/u2_key.pem ubuntu@3.10.229.117
+get /var/lib/mysql-files/dropouts.csv
+get /var/lib/mysql-files/test.csv
+get /var/lib/mysql-files/trial.csv
+get /var/lib/mysql-files/mover2.csv
+get /var/lib/mysql-files/summary.csv

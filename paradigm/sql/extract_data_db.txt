@@ -1,0 +1,68 @@
+ssh -i ~/.ssh/u2_key.pem ubuntu@3.10.229.117
+
+sudo mysql -u root -p
+
+USE hd;
+
+(SELECT 'worker_ID', 'mover2', 'index_cpd')
+UNION
+(SELECT worker_ID, mover2, index_cpd FROM mover2)
+INTO OUTFILE '/var/lib/mysql-files/mover2.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+(SELECT 'worker_ID', 'assignment_ID', 'hit_ID', 'trial', 'task')
+UNION
+(SELECT worker_ID, assignment_ID, hit_ID, trial, task FROM summary)
+INTO OUTFILE '/var/lib/mysql-files/summary.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+
+(SELECT 'worker_ID', 'assignment_ID', 'hit_ID', 'trial', 'task')
+UNION
+(SELECT worker_ID, assignment_ID, hit_ID, trial, task FROM dropouts)
+INTO OUTFILE '/var/lib/mysql-files/dropouts.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+
+
+(SELECT 'worker_ID', 'assignment_ID', 'hit_ID', 'subjnum', 'trial_index', 'time_elapsed', 'rt', 'response','key_resp','mouse', 'question_count', 'quiz_test_correct', 'quiz_test_performance', 'quiz_test_incorrect', 'event_duration', 'trial', 'task', 'role_assignment', 'role', 'controller', 'mover1', 'mover2', 'trust', 'reciprocity', 'index_cpd', 'index_tg', 'coplayer_type', 'alpha', 'beta', 'payoff_mover1', 'payoff_mover2', 'waiting_length', 'quest_resp', 'tot_points', 'exp_dur', 'experiment_completed')
+UNION
+(SELECT worker_ID, assignment_ID, hit_ID, subjnum, trial_index, time_elapsed, rt, response, key_resp,
+    mouse, question_count, quiz_test_correct, quiz_test_performance, quiz_test_incorrect,
+    event_duration, trial, task, role_assignment, role, controller, mover1, mover2,
+    trust, reciprocity, index_cpd, index_tg, coplayer_type, alpha, beta, payoff_mover1,
+    payoff_mover2, waiting_length, quest_resp, tot_points, exp_dur, experiment_completed FROM test)
+INTO OUTFILE '/var/lib/mysql-files/test.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+
+
+(SELECT 'worker_ID', 'assignment_ID', 'hit_ID', 'subjnum', 'trial_index', 'time_elapsed', 'rt', 'response','key_resp','mouse', 'question_count', 'quiz_test_correct', 'quiz_test_performance', 'quiz_test_incorrect', 'event_duration', 'trial', 'task', 'role_assignment', 'role', 'controller', 'mover1', 'mover2', 'trust', 'reciprocity', 'index_cpd', 'index_tg', 'coplayer_type', 'alpha', 'beta', 'payoff_mover1', 'payoff_mover2', 'waiting_length', 'quest_resp', 'tot_points', 'exp_dur', 'experiment_completed')
+UNION
+(SELECT worker_ID, assignment_ID, hit_ID, subjnum, trial_index, time_elapsed, rt, response, key_resp,
+    mouse, question_count, quiz_test_correct, quiz_test_performance, quiz_test_incorrect,
+    event_duration, trial, task, role_assignment, role, controller, mover1, mover2,
+    trust, reciprocity, index_cpd, index_tg, coplayer_type, alpha, beta, payoff_mover1,
+    payoff_mover2, waiting_length, quest_resp, tot_points, exp_dur, experiment_completed FROM trial)
+INTO OUTFILE '/var/lib/mysql-files/trial.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+
+
+
+EXIT;
+
+
+
+
+

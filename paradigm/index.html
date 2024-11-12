@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Experiment</title>
+        <script src="https://unpkg.com/jspsych@7.3.4"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.2.0"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-html-slider-response@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-webgazer-calibrate@1.0.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-webgazer-init-camera@1.0.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-webgazer-validate@1.0.3"></script>
+        <script src="https://cdn.jsdelivr.net/gh/jspsych/jspsych@jspsych@7.0.0/examples/js/webgazer/webgazer.js"></script>
+        <script src="https://unpkg.com/@jspsych/extension-webgazer@1.0.3"></script>
+        <script src="https://unpkg.com/@jspsych/extension-mouse-tracking@1.0.3"></script>
+        <script src="./cp/html-button-response2.js"></script>
+        <script src="./cp/custom_functions.js"></script>
+        <script src="./cp/create_consent_forms.js"></script>
+        <script src="./cp/create_role_assignment.js"></script>
+        <script src="./cp/create_welcome_text.js"></script>
+        <script src="./cp/create_quiz_instructions.js"></script>
+        <script src="./cp/make_connections.js"></script>
+        <script src="./cp/create_instructions.js"></script>
+        <script src="./cp/create_instructions_ug.js"></script>
+        <script src="./cp/create_instructions_tg.js"></script>
+        <script src="./cp/gen_cond_ug.js"></script>
+        <script src="./cp/create_ug_nsoc.js"></script>
+        <script src="./cp/create_eyetracking_setup.js"></script>
+        <script src="./cp/waiting_room.js"></script>
+        <script src="./cp/coplayer_dropout.js"></script>
+        <script src="./cp/create_questionnaires.js"></script>
+        <script src="./cp/create_debriefing.js"></script>
+        <script src="./cp/questionnaires.js"></script>
+        <script src="./cp/jquery-1.11.3.js"></script>
+        <script src="./cp/jquery-ui-1.12.1.min.js"></script>
+        <script src="./cp/randperm.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.3.0/math.js"></script>        
+        <script src="https://cdn.jsdelivr.net/npm/jstat@1.9.5/dist/jstat.min.js"></script>
+        <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css"/>
+        <style>
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #jspsych-html-button-response-btngroup {
+                float: left;
+                width: 100%;
+                padding: 20px;
+            }
+            .jspsych-html-button-response-button {
+                float: left;
+                width: 50%;
+                padding: 0px;
+            }
+            #jspsych-html-button-response-stimulus {
+                font-size: 25px !important
+            }
+            #jspsych-html-keyboard-response-stimulus {
+                font-size: 25px !important
+            }
+            #jspsych-categorize-html-stimulus {
+                font-size: 25px !important
+            }
+            #jspsych-categorize-html-feedback {
+                font-size: 25px !important
+            } 
+            #jspsych-html-slider-response-prompt {
+                font-size: 25px !important
+            }          
+            </style>
+    </head>
+
+    <script>
+
+    /* ================== */
+    /* Set initialization */
+    /* ================== */
+    var jsPsych = initJsPsych({
+            extensions: [
+                {type: jsPsychExtensionMouseTracking},
+                {type: jsPsychExtensionWebgazer, auto_initialize: false}
+            ],
+            on_close: function(){
+                return saveDataToDb_dropouts()},
+            on_trial_finish: function() {
+                saveDataToDb_trial()}
+        });
+
+    /* Create timeline & random subject number */
+    var timeline = [];
+    var subjnum = String(Math.round(Math.random()*10**10)); //ten numbers should suffice?
+    var debug = 0;
+
+    /* Get Prolific data*/
+    if (!debug){
+    var paramstr = window.location.search.substring(1);
+    var parampairs = paramstr.split("&");
+    var worker_ID = "";
+    var assignment_ID = "";
+    var hit_ID = "";
+    for (i=0; i<parampairs.length; i++) {
+    var pair = parampairs[i].split("=");
+    if (pair[0] == "workerId")
+    worker_ID = pair[1];
+    if (pair[0] == "assignmentId")
+    assignment_ID = pair[1];
+    if (pair[0] == "hitId")
+    hit_ID = pair[1];}
+
+    jsPsych.data.addProperties({
+  subjnum: subjnum, worker_ID: worker_ID, assignment_ID: assignment_ID, hit_ID: hit_ID, tot_players: 1});}
+
+/* DEFINE WHAT TO RUN! */
+var make_instructions = 1;
+var make_consent_form=1;
+var eyetracking=0;
+var make_quiz = 1;
+var make_ug = 1;
+var make_questionnaires = 1;
+
+/* ====================== */
+/* EXPERIMENT'S VARIABLES */
+/* ====================== */
+var ntrials         = 5;//15;
+var tau             = .5;
+
+/* ANSWER KEYS */
+var continue_key = ['C'];
+var end_key = ['E'];
+var player_choices = jsPsych.randomization.shuffle([0,1]);; //1=red planet, 0=blue planet
+var arrow_choices = [37,39]; //leftarrow, rightarrow
+var points = ['2','8','1','5']; // red-red, red-blue, blue-red, blue-blue
+
+/* TIMING */
+var max_waiting_period = 600000; // 10 minutes to wait for other participant's choice
+var max_waiting_room_period = 300000; // 5 minutes to wait for matching
+var wait_waiting_room = 1000;
+var waiting_room_ins_time = 6000;
+var wait_for_start = 200;
+var wait_for_start_nsoc = 200;
+var player_pres_dur = 1000;
+var player_backg = 2000;
+var dec_dur = 2000;
+var fb_dur = 3000;
+var dur_instr = 60000;
+
+
+/* =============== */
+/* PRELOAD OPTION  */
+/* =============== */
+var avatar_ind=[...Array(16).keys()]; avatar_ind.shift();
+var avatar_ind = jsPsych.randomization.shuffle(avatar_ind);
+for (var i=0; i<ntrials; i++){
+    pimages[i] = "./stimulus/avatars/Folie"+String(avatar_ind[i])+".JPG";
+}
+
+var preload = {
+    type: jsPsychPreload,
+    images: pimages
+}
+timeline.push(preload);
+
+
+/* ============ */
+/* WELCOME TEXT */
+/* ============ */
+var welcome_msg = {
+        timeline: create_welcome_text(),
+        on_finish: function(){
+            console.log("check exclusion!");
+            return check_exclusion() // check worker ID and exclude if necessary
+    }   };
+timeline.push(welcome_msg);
+
+
+/* ============ */
+/* CONSENT FORM */
+/* ============ */
+if (make_consent_form){
+   var consent_forms = {
+        timeline: create_consent_timeline(),
+        conditional_function: function(){
+                return check_part()}
+      };
+timeline.push(consent_forms);}
+
+
+/* =========================== */
+/* INSTRUCTIONS & WAITING ROOM */
+/* =========================== */
+if (make_instructions==1){
+
+        // GENERAL INSTRUCTIONS
+        var instructions = {
+        timeline : instructions_ug(),
+            conditional_function: function (){
+                return check_part()},
+        }
+        timeline.push(instructions);
+
+        // MAKE QUIZ
+        if (make_quiz==1){
+        var instructions = {
+        timeline : create_quiz_instructions(),
+            conditional_function: function (){
+                return check_part()},
+        }
+        timeline.push(instructions);}
+
+        if (make_quiz==1){
+        var quiz_tag = {
+        timeline : create_show_quiz_mistakes(),
+            conditional_function: function (){
+                return check_part()},
+        }
+        timeline.push(quiz_tag);}
+
+        // WAITING ROOM
+        var waiting_room = {
+            timeline: create_waiting_room(),
+            conditional_function: function(){
+            if (check_part()){
+                if (check_test()){return true}
+                            else {return false}}
+            else {return false}},
+        }
+        timeline.push(waiting_room);
+
+        // ASSIGN ROLE
+        var assign_role = {
+            timeline: create_role_assignment(),
+            conditional_function: function(){
+            if (check_part()){
+                if (check_test()){return true}
+                            else {return false}}
+            else {return false}},
+        };
+        timeline.push(assign_role);
+
+}
+
+
+/*=================*/
+/*EYETRACKING*/
+/*=================*/
+if (eyetracking==1){
+    if (!debug){
+    var run_eyetrack_setup ={
+        timeline: create_eyetracking_setup(),
+        conditional_function: function(){
+            if (check_part()){
+                if (check_test()){return true}
+                            else {return false}}
+            else {return false}}
+    }} else {
+        var run_eyetrack_setup = {
+        timeline : create_eyetracking_setup()
+    }}
+    timeline.push(run_eyetrack_setup);}
+
+
+// Determine solo cond timing
+var copl_dec_dur = [];
+for (var j=0; j<ntrials; j++){
+    var dur_gauss = gaussian(1370,2180);
+    copl_dec_dur[j] = dur_gauss();
+    if (copl_dec_dur[j]<1500){
+        copl_dec_dur[j] = 1500;}
+    else if (copl_dec_dur[j]>12000){
+        copl_dec_dur[j] = 12000;}
+}
+console.log(copl_dec_dur);
+
+var cond_sh = gen_cond_ug();
+
+/* LOAD STIMULI UG*/
+var ug_stimuli = [];
+for (var i=0;i<ntrials;i++){
+    var ug_temp =
+    {stimulus : pimages[i],
+        coplayer_dec_dur_ug: copl_dec_dur[i], trial_count_ug : i+1,
+        proposer_pres_dur: player_pres_dur, proposer_backg_dur: player_backg, proposer_dec_dur: dec_dur, fb_dur: fb_dur,
+        shared2: cond_sh[0], shared5: cond_sh[1], offer: cond_sh[2]
+    };
+
+ug_stimuli.push(ug_temp);
+}
+console.log(ug_stimuli);
+
+
+
+/*=================*/
+/*START UG TASK*/
+/*=================*/
+if (make_ug==1){
+    if (!debug){
+var run_ug_nsoc = {
+    timeline : create_ug_nsoc(),
+    conditional_function: function(){
+            if (check_part()){
+                if (check_test()){
+                    var type_game = jsPsych.data.get().select('tot_players').values[0];
+                    if (type_game==1){return true} else {return false}}
+                            else {return false}}
+            else {return false}}
+}} else {
+    var run_ug_nsoc = {
+    timeline : create_hd_nsoc()
+}}
+timeline.push(run_ug_nsoc);}
+
+
+
+
+
+/*====================*/
+/* RUN QUESTIONNAIRES */
+/*====================*/
+if (make_questionnaires==1){
+    if (!debug){
+var run_quest = {
+    timeline : create_questionnaires(),
+    conditional_function: function(){
+            if (check_part()){
+                if (check_test()){return true}
+                            else {return false}}
+            else {return false}}
+}} else {
+    var run_quest = {
+    timeline : create_questionnaires()
+}}
+timeline.push(run_quest);}
+
+
+
+
+
+/*====================*/
+/* DEBRIEFING */
+/*====================*/
+var debrief_block = {
+  timeline: create_debriefing()
+};
+
+var debrief_block_pres = {
+    timeline : [debrief_block],
+    conditional_function: function(){
+            if (check_part()){
+                if (check_test()){return true}
+                            else {return false}}
+            else {return false}}
+}
+timeline.push(debrief_block_pres);
+
+var thanks_experiment_message = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function (){
+        message = "<p>Thank you for your participation! This experiment is now over. Please press the bar space to receive your personal code.</p>";
+        return message;
+    },
+    trial_duration: dur_instr,
+    choices : " ",
+    data: {trial: 'thanks_msg', task: 'thanks_message'},
+    on_finish: function(data){
+        var previous_data = jsPsych.data.get().last(2).values()[0];
+        //console.log('EXPERIMENT COMPLETED');
+        //console.log(previous_data);
+        if (previous_data.task=='debriefing'){data.experiment_completed = 1}
+        else {data.experiment_completed = 0};
+        data.exp_dur = jsPsych.data.get().select("time_elapsed").values;
+        data.exp_dur = data.exp_dur.slice(-1)[0]; //total time on experiment in milliseconds
+        data.key_resp = data.response;
+        data.response = 999;
+        saveDataToDb();}
+};
+var end_experiment_message = {
+    type: jsPsychHtmlButtonResponse2,
+    choices: ["<a href='https://app.prolific.co/submissions/complete?cc=XXXXX'>Submit to Prolific</a>"],
+    stimulus: "<p>Please submit your work by clicking the following link, so we can bonus you. Afterwards, you can close the browser. Thank you again for completing this experiment!</p>",
+    trial_duration: dur_instr,
+    response_ends_trial: true,
+    data: {trial: 'personal_code', task: 'ending_message'},
+}
+
+var thanks_pres = {
+    timeline : [thanks_experiment_message,end_experiment_message],
+    conditional_function: function(){
+            return check_part()}
+}
+timeline.push(thanks_pres);
+
+
+var exclude_message1 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "<p>Thank you for your participation!</p>",
+    trial_duration: 1000,
+    data: {trial: 'excluding_message1', task: 'exclusion'},
+    on_finish: function (data){
+        data.key_resp = data.response;
+        data.response = 999;
+        return saveDataToDb_summary()
+    }
+}
+var exclude_message2 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "<p>Thank you for your participation!</p>"+"<p>You have already participated in this experiment and cannot participate again. We hope you will participate in further experiments from our lab. Please close now this window.</p>",
+    trial_duration: 30000,
+    data: {trial: 'excluding_message2', task: 'exclusion'},
+    on_start: function(data){
+        data.key_resp = data.response;
+        data.response = 999;
+        return saveDataToDb()
+    }
+}
+var exclusion_pres = {
+    timeline: [exclude_message1,exclude_message2],
+    conditional_function: function(){
+        if (check_part()) {return false}
+        else {return true}}
+}
+timeline.push(exclusion_pres);
+
+/*====================*/
+/* RUN experiment */
+/*====================*/
+jsPsych.run(timeline);
+
+    </script>
+</html>

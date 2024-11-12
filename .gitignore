@@ -1,0 +1,54 @@
+### === FOLDERS === ###
+data/
+results/
+
+### === FILES === ###
+*.Rds
+*.RDS
+*.zip
+
+### === MATLAB === ###
+# Matlab files
+*.mat
+
+# Windows default autosave extension
+*.asv
+
+# OSX / *nix default autosave extension
+*.m~
+*.DS_Store
+
+# Compiled MEX binaries (all platforms)
+*.mex
+
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Simulink autosave extension
+*.autosave
+
+
+### === R === ###
+# History files
+*.Rhistory
+*.Rapp.history
+
+# Session Data files
+*.RData
+*.RDataTmp
+
+# User-specific files
+*.Ruserdata
+
+# Output files from R CMD build
+*.tar.gz
+
+# Output files from R CMD check
+*.Rcheck/
+
+# RStudio files
+*.Rproj.user/
+
+# R Environment Variables
+*.Renviron

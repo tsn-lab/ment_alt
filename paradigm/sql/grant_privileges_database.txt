@@ -1,0 +1,13 @@
+Create database and give it phpadmin rights (after connection to AWS):
+
+sudo mysql -u root
+
+CREATE DATABASE cpd;
+
+USE cpd;
+
+GRANT ALL PRIVILEGES ON cpd.* TO 'tsnlabrhul'@'localhost';
+
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'tsnlabrhul'@'localhost';
