@@ -58,7 +58,7 @@ function create_ug_nsoc() {
         var proposer_pres = {
             type : jsPsychImageButtonResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             prompt : function(){"<p>You have been paired with the above player</p>"
             },
             data: {trial: 'proposer_pres', task: 'ug', index_ug: jsPsych.timelineVariable('trial_count_ug'),proposer_pres_dur: jsPsych.timelineVariable('proposer_pres_dur')},
@@ -67,7 +67,7 @@ function create_ug_nsoc() {
         var proposer_backg1 = {
             type : jsPsychImageButtonResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             prompt : function(){
                 
                 var shared2 = jsPsych.timelineVariable('shared2');
@@ -86,7 +86,7 @@ function create_ug_nsoc() {
         var proposer_backg2 = {
             type : jsPsychImageButtonResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             prompt : function(){
                 
                 var shared2 = jsPsych.timelineVariable('shared2');
@@ -144,7 +144,7 @@ function create_ug_nsoc() {
         var proposer_wait_dec = {
             type : jsPsychImageButtonResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             prompt : function(){
                 
                 "<p>This player is offerring...</p>"+
@@ -165,7 +165,7 @@ function create_ug_nsoc() {
         var proposer_dec = {
             type : jsPsychImageButtonResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             prompt : function(){
                 
                 var offer = jsPsych.timelineVariable('offer');
@@ -221,7 +221,7 @@ function create_ug_nsoc() {
         var fb_pres = {
             type : jsPsychImageButtonResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             prompt : function(){
 
                 var wl = jsPsych.data.getLastTrialData();
