@@ -3,4 +3,4 @@
 Example https address:
 
 
-https://tsnlab-rhul.com/exp/cpd/?assignmentId=0d8o9vexv1qm&hitId=5fb2da5e7e6d31537882b00c&workerId=5d931d36a44c0500165ff29e&preview=1
+https://tsnlab-rhul.com/exp/menta/?assignmentId=0d8o9vexv1qm&hitId=5fb2da5e7e6d31537882b00c&workerId=5d931d36a44c0500165ff29e&preview=1

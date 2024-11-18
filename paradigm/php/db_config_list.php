@@ -3,6 +3,6 @@
   $port = 3306;
   $username = "tsnlabrhul";
   $password = "!?gb2023?!";
-  $dbname = "cpd";
+  $dbname = "menta";
   $table = "list";
 ?>

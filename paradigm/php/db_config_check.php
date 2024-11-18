@@ -15,7 +15,7 @@ class DatabaseConfiguration
 		$this->servername = "localhost";
         $this->username = "tsnlabrhul";
         $this->password = "!?gb2023?!";
-        $this->dbname = "cpd";
+        $this->dbname = "menta";
         $this->portnumber = "3306";
     }
     public function createConnection() {

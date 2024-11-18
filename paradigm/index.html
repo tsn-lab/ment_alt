@@ -140,7 +140,7 @@ var points = ['2','8','1','5']; // red-red, red-blue, blue-red, blue-blue
 
 /* TIMING */
 var max_waiting_period = 600000; // 10 minutes to wait for other participant's choice
-var max_waiting_room_period = 300000; // 5 minutes to wait for matching
+var max_waiting_room_period = 3;//00000; // 5 minutes to wait for matching
 var wait_waiting_room = 1000;
 var waiting_room_ins_time = 6000;
 var wait_for_start = 200;
@@ -157,6 +157,7 @@ var dur_instr = 60000;
 /* =============== */
 var avatar_ind=[...Array(16).keys()]; avatar_ind.shift();
 var avatar_ind = jsPsych.randomization.shuffle(avatar_ind);
+pimages = [];
 for (var i=0; i<ntrials; i++){
     pimages[i] = "./stimulus/avatars/Folie"+String(avatar_ind[i])+".JPG";
 }
@@ -312,7 +313,7 @@ var run_ug_nsoc = {
             else {return false}}
 }} else {
     var run_ug_nsoc = {
-    timeline : create_hd_nsoc()
+    timeline : create_ug_nsoc()
 }}
 timeline.push(run_ug_nsoc);}
 

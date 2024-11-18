@@ -2,11 +2,11 @@ Create database and give it phpadmin rights (after connection to AWS):
 
 sudo mysql -u root
 
-CREATE DATABASE cpd;
+CREATE DATABASE menta;
 
-USE cpd;
+USE menta;
 
-GRANT ALL PRIVILEGES ON cpd.* TO 'tsnlabrhul'@'localhost';
+GRANT ALL PRIVILEGES ON menta.* TO 'tsnlabrhul'@'localhost';
 
 FLUSH PRIVILEGES;
 
